@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Welcome from "./pages/Welcome";
 import ExpensesDash from "./pages/ExpensesDash";
 import AAddExps from "./pages/AAddExps";
+import ExpensesTable from "./pages/ExpensesTable.jsx";
 
 
 
@@ -21,6 +22,7 @@ export default function App() {
         <Route path="/Dashboard" element={<Welcome/>}></Route>
         <Route path="/Dashboard-Expenses" element={<ExpensesDash/>}></Route>
         <Route path="/Add-Expenses" element={<AAddExps/>}></Route>
+        <Route path="/Get-all-Expens" element={<ExpensesTable/>}></Route>
        
   
         
