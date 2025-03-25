@@ -89,16 +89,21 @@ const AAddExps = () => {
             required
             className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
           />
-          <input
-            type="text"
-            name="category"
-            value={formdata.category}
-            onChange={handleChange}
-            placeholder="category"
-           
-            required
-            className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
-          />
+          <select
+  name="category"
+  value={formdata.category}
+  onChange={handleChange}
+  required
+  className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
+>
+  <option value="" disabled>Select a category</option>
+  <option value="category1">Category 1</option>
+  <option value="category2">Category 2</option>
+  <option value="category3">Category 3</option>
+  <option value="category4">Category 4</option>
+  {/* Add more options as needed */}
+</select>
+
           <input
             type="number"
             name="amount"
