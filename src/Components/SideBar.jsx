@@ -50,7 +50,7 @@ const SideBar = () => {
           </li>
           <li>
             <a
-              href="#"
+              href="/income_dashboard"
               className="block py-3 px-7 text-white text-lg border-b border-[#10558d] hover:bg-white hover:text-[#0c7db1]"
             >
               <span className="icon inline-block w-7 text-[#dee4ec]">
@@ -61,7 +61,7 @@ const SideBar = () => {
           </li>
           <li>
             <a
-              href="#"
+              href="/BudgetHome"
               className="block py-3 px-7 text-white text-lg border-b border-[#10558d] hover:bg-white hover:text-[#0c7db1]"
             >
               <span className="icon inline-block w-7 text-[#dee4ec]">

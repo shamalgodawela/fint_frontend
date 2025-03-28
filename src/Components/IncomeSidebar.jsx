@@ -8,11 +8,11 @@ const ExepenseSidebar = () => {
   };
 
   return (
-    <div className="relative flex">
+    <div className={`flex ${isActive ? 'ml-0' : 'ml-[225px]'} transition-all`}>
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 w-[225px] h-full bg-[#070c21] p-5 transition-all z-20 ${
-          isActive ? 'left-0' : 'left-[-225px]'
+        className={`fixed top-0 left-0 w-[225px] h-full bg-[#070c21] p-5 transition-all ${
+          isActive ? 'left-[-225px]' : 'left-0'
         }`}
       >
         <div className="profile text-center mb-8">
@@ -22,82 +22,79 @@ const ExepenseSidebar = () => {
             alt="profile_picture"
           />
           <h3 className="text-white mt-4">Fintech</h3>
-          <p className="text-[#c0f0fd] text-sm">Expenses Management</p>
+          <p className="text-[#c0f0fd] text-sm">Income Management</p>
           <p className="text-[#c0f0fd] text-sm">Management Categories</p>
         </div>
         <ul>
           <li>
             <a
-              href="#"
+             
               className="block py-3 px-7 text-white text-lg border-b border-[#10558d] hover:bg-white hover:text-[#0c7db1]"
             >
               <span className="icon inline-block w-7 text-[#dee4ec]">
                 <i className="fas fa-home"></i>
               </span>
               <span className="item">
-                <a href="/Dashboard">Go Home</a>
+                <a href='/Dashboard'>Go Home</a>
               </span>
             </a>
           </li>
           <li>
             <a
-              href="#"
+              
               className="block py-3 px-7 text-white text-lg border-b border-[#10558d] hover:bg-white hover:text-[#0c7db1]"
             >
               <span className="icon inline-block w-7 text-[#dee4ec]">
                 <i className="fas fa-home"></i>
               </span>
               <span className="item">
-                <a href="/Dashboard-Expenses">Dashboard</a>
+                <a href='/income_dashboard'>Dashboard</a>
               </span>
             </a>
           </li>
           <li>
             <a
-              href="#"
+             
               className="block py-3 px-7 text-white text-lg border-b border-[#10558d] hover:bg-white hover:text-[#0c7db1]"
             >
               <span className="icon inline-block w-7 text-[#dee4ec]">
                 <i className="fas fa-home"></i>
               </span>
               <span className="item">
-                <a href="/Add-Expenses">Add Exps</a>
+                <a href='/income_form'>Add Income</a>
               </span>
             </a>
           </li>
           <li>
             <a
-              href="#"
+              
               className="block py-3 px-7 text-white text-lg border-b border-[#10558d] hover:bg-white hover:text-[#0c7db1]"
             >
               <span className="icon inline-block w-7 text-[#dee4ec]">
                 <i className="fas fa-home"></i>
               </span>
               <span className="item">
-                <a href="/Get-all-Expens">All Details</a>
+                <a href='/income_list'>All Details</a>
               </span>
             </a>
           </li>
           <li>
             <a
-              href="/reportExpences"
+              
               className="block py-3 px-7 text-white text-lg border-b border-[#10558d] hover:bg-white hover:text-[#0c7db1]"
             >
-              <span className="icon inline-block w-7 text-[#232528]">
+              <span className="icon inline-block w-7 text-[#dee4ec]">
                 <i className="fas fa-home"></i>
               </span>
-              <span className="item text-center">Report</span>
+              <span className="item text-center">
+                <a href='/income_reports'>Reports</a>
+              </span>
             </a>
           </li>
         </ul>
       </div>
 
-      {/* Main Content */}
-      <div
-        className={`flex-1 transition-all duration-300 ${
-          isActive ? 'ml-[225px]' : 'ml-0'
-        }`}
-      >
+      <div className="flex-1">
         <div className="flex items-center justify-between bg-[#070c21] p-5">
           <button
             onClick={toggleSidebar}
@@ -110,11 +107,9 @@ const ExepenseSidebar = () => {
               zIndex: 10,
             }}
           >
-            ☰
+            {isActive ? '☰' : 'X' }
           </button>
         </div>
-
-        {/* Add your content here */}
       </div>
     </div>
   );

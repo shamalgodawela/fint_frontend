@@ -6,13 +6,16 @@ import Loader from '../Components/Loader';
 import ExepenseSidebar from '../Components/ExepenseSidebar';
 import { FaEdit, FaEye, FaTrash } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import { CSVLink } from 'react-csv';
 
-const ExpensesTable = () => {
+const ReportExpences = () => {
   const [expenses, setExpenses] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
-  const [isSidebarActive, setIsSidebarActive] = useState(false); // Track sidebar state
+  const [isSidebarActive, setIsSidebarActive] = useState(false);
 
   useEffect(() => {
     const fetchExpenses = async () => {
@@ -43,7 +46,6 @@ const ExpensesTable = () => {
     }
   };
 
-  // Filter expenses based on the search query (name or category)
   const filteredExpenses = expenses.filter(expense =>
     expense.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     expense.category.toLowerCase().includes(searchQuery.toLowerCase())
@@ -53,15 +55,49 @@ const ExpensesTable = () => {
     setIsSidebarActive(!isSidebarActive);
   };
 
+  const generateReport = () => {
+    const doc = new jsPDF();
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+    const fileName = `expenses-report-${timestamp}.pdf`;
+
+    const title = "Expenses Report";
+    const titleWidth = doc.getTextWidth(title);
+    const pageWidth = doc.internal.pageSize.width;
+    const titleX = (pageWidth - titleWidth) / 2;
+    doc.text(title, titleX, 10);
+
+    doc.autoTable({
+      head: [["Name", "Category", "Amount", "Date"]],
+      body: filteredExpenses.map(expense => [
+        expense.name,
+        expense.category,
+        expense.amount,
+        new Date(expense.date).toLocaleDateString()
+      ]),
+      theme: "grid",
+      headStyles: { fillColor: [0, 0, 0] },
+      bodyStyles: { fillColor: [240, 240, 240] },
+    });
+
+    doc.save(fileName);
+  };
+
+  const csvData = [
+    ['Name', 'Category', 'Amount', 'Date'],
+    ...filteredExpenses.map(expense => [
+      expense.name,
+      expense.category,
+      expense.amount,
+      new Date(expense.date).toLocaleDateString()
+    ])
+  ];
+
   return (
     <div className="bg-gradient-to-r from-[#434570] to-[#232439] h-screen w-full flex">
-      {/* Sidebar */}
       <ExepenseSidebar isActive={isSidebarActive} toggleSidebar={toggleSidebar} />
-
       <div className={`container mx-auto p-6 transition-all ${isSidebarActive ? 'ml-[225px]' : 'ml-0'}`}>
         <h2 className="text-3xl font-bold mb-6 text-center text-white">All Expenses</h2>
 
-        {/* Search Bar */}
         <div className="mb-6 flex justify-center">
           <input
             type="text"
@@ -70,6 +106,18 @@ const ExpensesTable = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
+        </div>
+
+        <div className="mb-6 flex justify-center space-x-4">
+          <button onClick={generateReport} className="bg-blue-500 text-white p-2 rounded-lg shadow-md">
+            Download PDF Report
+          </button>
+
+          <CSVLink data={csvData} filename="expenses-report.csv">
+            <button className="bg-green-500 text-white p-2 rounded-lg shadow-md">
+              Download CSV Report
+            </button>
+          </CSVLink>
         </div>
 
         <div className="overflow-x-auto">
@@ -89,18 +137,11 @@ const ExpensesTable = () => {
               <tbody>
                 {filteredExpenses.length > 0 ? (
                   filteredExpenses.map((expense, index) => (
-                    <tr
-                      key={expense._id}
-                      className={`${
-                        index % 2 === 0 ? 'bg-gray-700' : 'bg-gray-600'
-                      } hover:bg-gray-500 transition-all duration-300`}
-                    >
+                    <tr key={expense._id} className={`${index % 2 === 0 ? 'bg-gray-700' : 'bg-gray-600'} hover:bg-gray-500 transition-all duration-300`}>
                       <td className="py-4 px-8 text-white">{expense.name}</td>
                       <td className="py-4 px-8 text-white">{expense.category}</td>
                       <td className="py-4 px-8 text-white">{expense.amount}</td>
-                      <td className="py-4 px-8 text-white">
-                        {new Date(expense.date).toLocaleDateString()}
-                      </td>
+                      <td className="py-4 px-8 text-white">{new Date(expense.date).toLocaleDateString()}</td>
                       <td className="py-4 px-8 text-white flex space-x-4">
                         <Link to={`/updateexpenses/${expense._id}`} className="text-yellow-500 hover:text-yellow-300">
                           <FaEdit size={20} />
@@ -132,4 +173,4 @@ const ExpensesTable = () => {
   );
 };
 
-export default ExpensesTable;
+export default ReportExpences;

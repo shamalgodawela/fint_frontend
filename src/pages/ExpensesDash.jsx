@@ -10,12 +10,12 @@ const ExpensesDash = () => {
   <h1 className='font-extrabold text-center text-3xl text-white'>Expenses Dashboard</h1>
   
   <div className="flex justify-center items-center space-x-4 mt-10">
-    {/* Monthly Expenses Chart */}
+    
     <div className="w-[500px] h-[400px] bg-gray-800 p-3 rounded-lg shadow-lg">
       <MonthlyExpensesChart />
     </div>
 
-    {/* Category Wise Expenses Chart */}
+    
     <div className="w-[500px] h-[400px] bg-gray-800 p-3 rounded-lg shadow-lg">
       <CategoryWiseExpensesChart />
     </div>
