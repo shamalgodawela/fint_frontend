@@ -22,6 +22,27 @@ const AAddExps = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    
+    if ((name === 'amount') && isNaN(value)) {
+      toast.error(`${name.charAt(0).toUpperCase() + name.slice(1)} must be a number`);
+      return;
+    }
+
+    if ((name === 'name' || name==='responsiblePerson') && /[^a-zA-Z\s]/.test(value)) {
+      toast.error('Full Name must contain only alphabetic characters');
+      return;
+    }
+    if (name === "phone") {
+      if (!/^\d*$/.test(value)) {
+        toast.error("Phone number must contain only numbers.");
+        return;
+      }
+    }
+    
+  
+
+    
     setFormdata(prevState => ({
       ...prevState,
       [name]: value
@@ -30,6 +51,12 @@ const AAddExps = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (formdata.phone.length !== 10) {
+      toast.error("Phone number must be exactly 10 digits.");
+      return;
+    }
+  
     try {
       const response = await axios.post(`http://localhost:5000/api/Expenses/createExpenses`, formdata);
       console.log(response.data);
@@ -105,7 +132,7 @@ const AAddExps = () => {
 </select>
 
           <input
-            type="number"
+            type="text"
             name="amount"
             value={formdata.amount}
             onChange={handleChange}
