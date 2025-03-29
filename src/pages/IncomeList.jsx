@@ -2,10 +2,10 @@ import React, { useEffect, useState, useRef } from "react";
 import { FaTrash, FaSave, FaEdit, FaDownload } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { jsPDF } from "jspdf";
-import "jspdf-autotable";
-import { Pie, Bar } from "react-chartjs-2";
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale, BarElement } from "chart.js";
 import IncomeSidebar from "../Components/IncomeSidebar";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Register chart.js components
 ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale, BarElement);
@@ -42,6 +42,7 @@ const IncomeList = () => {
       try {
         await fetch(`${API_URL}/incomes/${id}`, { method: "DELETE" });
         setIncomes((prev) => prev.filter((income) => income._id !== id));
+        toast.success("Income deleted successfully.");
       } catch (err) {
         console.error("Error deleting income:", err.message);
       }
@@ -56,7 +57,7 @@ const IncomeList = () => {
     // Check if the amount is a valid number greater than 0
     if (field === "amount") {
       if (value <= 0) {
-        alert("Amount must be greater than 0");
+        toast.warning("Amount must be greater than 0");
         return;
       }
     }
@@ -65,7 +66,7 @@ const IncomeList = () => {
     if (field === "date") {
       const today = new Date().toISOString().split("T")[0];
       if (value > today) {
-        alert("You cannot select a future date.");
+        toast.warning("You cannot select a future date.");
         return;
       }
     }
@@ -90,10 +91,10 @@ const IncomeList = () => {
         prev.map((income) => (income._id === id ? updatedIncome : income))
       );
       setEditingRow(null);
-      alert("Income updated successfully.");
+      toast.success("Income updated successfully.");
     } catch (err) {
       console.error("Error updating income:", err.message);
-      alert("Error updating income.");
+      toast.error("Error updating income.");
     }
   };
 
@@ -327,6 +328,8 @@ const IncomeList = () => {
 
         
       </div>
+       <ToastContainer 
+            />
     </div>
   );
 };
